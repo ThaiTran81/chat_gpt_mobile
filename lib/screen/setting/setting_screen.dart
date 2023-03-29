@@ -1,7 +1,5 @@
 import 'package:chat_tdt/repository/share_data_repository.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'component/select_language.dart';
 
@@ -35,6 +33,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   void dispose() {
+    super.dispose();
     ShareDataConfigRepository.saveConfig();
   }
 
