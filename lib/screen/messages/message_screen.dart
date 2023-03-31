@@ -17,7 +17,7 @@ class MessagesScreen extends StatelessWidget {
         builder: (context, provider, child) {
           return Scaffold(
             extendBodyBehindAppBar: true,
-            appBar: buildAppBar(context),
+            appBar: buildAppBar(context, provider),
             body: Center(
                 child: Container(
                     decoration: BoxDecoration(
@@ -40,7 +40,7 @@ class MessagesScreen extends StatelessWidget {
     );
   }
 
-  AppBar buildAppBar(BuildContext context) {
+  AppBar buildAppBar(BuildContext context, MessageScreenProvider provider) {
     return AppBar(
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
@@ -63,7 +63,9 @@ class MessagesScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => SettingScreen(),
                           ),
-                        );
+                        ).then((value) {
+                          provider.refreshMessageHisory();
+                        });
                       },
                     )),
               ],

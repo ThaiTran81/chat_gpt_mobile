@@ -9,7 +9,7 @@ class OpenAIRepository {
   static Future<String> sendMessage(List<ChatMessage> chatMessages) async {
     final response = await dio.post(_API_OPENAI, data: {
       'messages': chatMessages
-          .map((e) => {'role': e.chatRole.code, 'content': e.text})
+          .map((e) => {'role': e.chatRole, 'content': e.text})
           .toList()
     });
     String res = response.data != null ? response.data['message']['content'] : 'please try again, something wrong';

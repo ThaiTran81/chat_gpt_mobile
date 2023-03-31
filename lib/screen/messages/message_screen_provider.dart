@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:chat_tdt/models/Chat.dart';
+import 'package:chat_tdt/repository/chat_message_repository.dart';
 import 'package:chat_tdt/repository/openai_repository.dart';
 import 'package:chat_tdt/repository/share_data_repository.dart';
-import 'package:chat_tdt/utils/text_to_speech.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../models/ChatMessage.dart';
 
 class MessageScreenProvider extends ChangeNotifier {
+  ChatMessageRepository chatMessageRepository = ChatMessageRepository.instance;
   List<ChatMessage> messageHistory = List.empty(growable: true);
   String? currentMessageSpeech;
   ChatMessage? lastChatMessage;
@@ -16,11 +16,19 @@ class MessageScreenProvider extends ChangeNotifier {
 
   ScrollController get scrollController => _scrollController;
 
+  MessageScreenProvider() {
+    chatMessageRepository.getChatMessageHistory().then((value) {
+      messageHistory = value;
+      notifyListeners();
+    });
+  }
+
   void addMessage(ChatMessage chatMessage) {
     messageHistory.add(chatMessage);
     lastChatMessage = chatMessage;
     notifyListeners();
     Timer(Duration(milliseconds: 100), () => _scrollDown());
+    chatMessageRepository.save(chatMessage);
   }
 
   void _scrollDown() {
@@ -32,7 +40,9 @@ class MessageScreenProvider extends ChangeNotifier {
   }
 
   void sendUserMessage(String content) async {
-    addMessage(ChatMessage(chatRole: ChatRole.USER, isSender: true, text: content));
+    var message = ChatMessage(
+        chatRole: ChatRole.USER.code, isSender: true, text: content);
+    addMessage(message);
     OpenAIRepository.sendMessage(messageHistory).then((value) {
       ChatMessage chatMessage = addAssistantMessage(value);
       if (ShareDataConfigRepository.autoSpeech) {
@@ -48,7 +58,8 @@ class MessageScreenProvider extends ChangeNotifier {
   }
 
   ChatMessage addAssistantMessage(String content) {
-    var chatMessage = ChatMessage(chatRole: ChatRole.ASSISTANT, isSender: false, text: content);
+    var chatMessage = ChatMessage(
+        chatRole: ChatRole.ASSISTANT.code, isSender: false, text: content);
     addMessage(chatMessage);
     return chatMessage;
   }
@@ -66,4 +77,14 @@ class MessageScreenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearMessageHistory() {
+    chatMessageRepository.deleteAll();
+    messageHistory.clear();
+    notifyListeners();
+  }
+
+  void refreshMessageHisory() async {
+    messageHistory = await chatMessageRepository.getChatMessageHistory();
+    notifyListeners();
+  }
 }

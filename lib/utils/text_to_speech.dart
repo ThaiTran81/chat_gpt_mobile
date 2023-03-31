@@ -5,9 +5,16 @@ import '../repository/share_data_repository.dart';
 
 
 enum TtsLanguageSetting {
-  vi_VN(languageCode: L10nUtils.VN_TTS, speechRate: 0.8),
-  en_US(languageCode: L10nUtils.EN_TTS);
-
+  vi_VN(
+      languageCode: L10nUtils.VN_TTS,
+      speechRate: 0.8,
+      speechVolume: 1,
+      speechPitch: 1),
+  en_US(
+      languageCode: L10nUtils.EN_TTS,
+      speechRate: 0.5,
+      speechVolume: 1,
+      speechPitch: 1);
 
   final double speechVolume;
   final double speechPitch;
@@ -15,7 +22,10 @@ enum TtsLanguageSetting {
   final String languageCode;
 
   const TtsLanguageSetting(
-      {required this.languageCode, this.speechVolume = 1, this.speechPitch = 1, this.speechRate = 0.5});
+      {required this.languageCode,
+      required this.speechVolume,
+      this.speechPitch = 1,
+      required this.speechRate});
 
   static TtsLanguageSetting getFrom(String ttsLanguageCode) {
     switch (ttsLanguageCode) {
@@ -36,6 +46,7 @@ class Text2Speech {
     await tts.setLanguage(languageSetting.languageCode);
     await tts.setVolume(languageSetting.speechVolume);
     await tts.setSpeechRate(languageSetting.speechRate);
+    await tts.setPitch(languageSetting.speechPitch);
   }
 
   static Future speak(String text) async {

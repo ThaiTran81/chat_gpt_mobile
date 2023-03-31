@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../components/gradient_text.dart';
 import '../../utils/constants.dart';
 import '../../repository/share_data_repository.dart';
-import '../../utils/text_to_speech.dart';
 
 class MainScreen extends StatelessWidget {
   @override

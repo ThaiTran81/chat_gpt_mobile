@@ -1,5 +1,7 @@
 import 'package:chat_tdt/repository/share_data_repository.dart';
+import 'package:chat_tdt/screen/setting/setting_screen_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'component/select_language.dart';
 
@@ -15,21 +17,29 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: buildAppBar(context),
-      body: Center(
-          child: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Colors.purple, Colors.purple.shade900, Colors.black],
-              )),
-              child: body())),
-    );
+    return ChangeNotifierProvider(
+        create: (context) => SettingScreenProvider(),
+        child: Consumer<SettingScreenProvider>(
+            builder: (context, provider, child) {
+          return Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: buildAppBar(context),
+            body: Center(
+                child: Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.purple,
+                        Colors.purple.shade900,
+                        Colors.black
+                      ],
+                    )),
+                    child: body(provider))),
+          );
+        }));
   }
-
 
   @override
   void dispose() {
@@ -77,7 +87,7 @@ class _SettingScreenState extends State<SettingScreen> {
         ));
   }
 
-  Widget body() {
+  Widget body(SettingScreenProvider provider) {
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.all(10),
@@ -90,24 +100,28 @@ class _SettingScreenState extends State<SettingScreen> {
                 null,
                 () => showModalBottomSheet(
                     shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20)),),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20)),
+                    ),
                     context: context,
                     builder: (context) => SelectLanguageFragment())),
             buildSettingItem(
                 "Auto play text to speech",
                 Switch(
                   activeColor: Colors.purple,
-                  value: isAutoSpeech,
+                  value: provider.autoSpeech,
                   onChanged: (bool value) {
-                    setState(() {
-                      isAutoSpeech = value;
-                    });
+                    provider.setAutoSpeech(value);
                   },
                 ),
                 null),
-            buildSettingItem("Clear message history", null, () => null)
+            buildSettingItem("Clear message history", null, () {
+              provider.clearMessageHistory();
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Clear all messages successfully"),
+              ));
+            })
           ],
         ),
       ),
