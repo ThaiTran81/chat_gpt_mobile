@@ -24,9 +24,8 @@ class ShareDataConfigRepository {
   static String languageCode = LanguageCode.en.name;
 
   static void initDataConfig(BuildContext context) async {
-    await Hive.initFlutter();
     ChatMessageRepository.instance.init();
-    var settingBox = await Hive.openBox('settings');
+    var settingBox = await Hive.box('settings');
     var messageHistoryBox = await Hive.openBox("messageHistory");
 
     autoSpeech = settingBox.get("autoSpeech", defaultValue: true);
@@ -50,5 +49,12 @@ class ShareDataConfigRepository {
 
   static void setAutoSpeech(bool value) {
     autoSpeech = value;
+  }
+
+  static void setLanguageCode(String languageCode) {
+    var settingBox = Hive.box('settings');
+    settingBox.put(SettingKey.speechLanguage.code, languageCode);
+    speechTextLanguage = languageCode;
+    Text2Speech.setUp(TtsLanguageSetting.getFrom(speechTextLanguage));
   }
 }

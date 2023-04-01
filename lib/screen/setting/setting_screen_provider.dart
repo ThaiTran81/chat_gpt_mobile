@@ -10,6 +10,8 @@ class SettingScreenProvider extends ChangeNotifier {
 
   bool autoSpeech = ShareDataConfigRepository.autoSpeech;
 
+  String selectedLaguage = ShareDataConfigRepository.speechTextLanguage;
+
   void clearMessageHistory() async {
     chatMessageRepository.deleteAll();
     toastMessage = 'Clear all messages successfully';
@@ -20,5 +22,10 @@ class SettingScreenProvider extends ChangeNotifier {
     ShareDataConfigRepository.setAutoSpeech(value);
     autoSpeech = value;
     notifyListeners();
+  }
+
+  void changeLanguageCodeTo(String languageCode) {
+    ShareDataConfigRepository.setLanguageCode(languageCode);
+    selectedLaguage = languageCode;
   }
 }

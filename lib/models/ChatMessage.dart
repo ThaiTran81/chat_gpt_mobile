@@ -34,6 +34,9 @@ class ChatMessage extends HiveObject {
   @HiveField(3)
   bool isSender;
 
+  @HiveField(4)
+  DateTime createdTime = DateTime.now();
+
   ChatMessage({
     this.text = '',
     required this.chatRole,

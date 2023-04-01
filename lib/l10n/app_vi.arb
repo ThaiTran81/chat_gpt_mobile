@@ -1,0 +1,14 @@
+{
+  "onboarding_title_header": "Chào mừng bạn đến với",
+  "onboarding_title_main_header": "Trợ lý ảo AI",
+  "onboarding_sub_header": "Hãy hỏi bất kỳ câu hỏi nào với trợ lý của bạn.",
+  "obboarding_btn_start": "Bắt đầu",
+  "message_screen_hint_text_input": "Nhập câu hỏi",
+  "setting_screen_title": "Cài đặt",
+  "language": "ngôn ngữ",
+  "auto_speech": "Tự động nói",
+  "clear_message_history": "Xóa lịch sử tin nhắn",
+  "clear_message_success": "Xoá lịch sử tin nhắn thành công",
+  "select_language": "Chọn ngôn ngữ",
+  "message_err_unexpected": "Trời! Đã có lỗi gì xảy ra với tôi á, bạn thử lại giúp tôi nhé, xin lỗi nhiều lắm luôn"
+}

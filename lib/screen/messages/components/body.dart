@@ -39,7 +39,17 @@ class Body extends StatelessWidget {
               child: listView,
             ),
           ),
-          ChatInputField(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (provider.isProcessing)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("processing, please wait ..."),
+                ),
+              ChatInputField(),
+            ],
+          ),
         ],
       ),
     );

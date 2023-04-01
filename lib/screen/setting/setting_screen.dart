@@ -2,18 +2,24 @@ import 'package:chat_tdt/repository/share_data_repository.dart';
 import 'package:chat_tdt/screen/setting/setting_screen_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'component/select_language.dart';
 
 class SettingScreen extends StatefulWidget {
-  const SettingScreen({Key? key}) : super(key: key);
+  late BuildContext context;
+
+  SettingScreen(this.context, {Key? key}) : super(key: key);
 
   @override
-  State<SettingScreen> createState() => _SettingScreenState();
+  State<SettingScreen> createState() => _SettingScreenState(context);
 }
 
 class _SettingScreenState extends State<SettingScreen> {
   bool isAutoSpeech = false;
+  late BuildContext context;
+
+  _SettingScreenState(this.context);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +79,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Settings",
+                    AppLocalizations.of(context).setting_screen_title,
                     textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme
@@ -96,7 +102,7 @@ class _SettingScreenState extends State<SettingScreen> {
           children: [
             Image.asset("assets/images/bot.gif", height: 120),
             buildSettingItem(
-                "Language",
+                AppLocalizations.of(context).language,
                 null,
                 () => showModalBottomSheet(
                     shape: const RoundedRectangleBorder(
@@ -105,9 +111,9 @@ class _SettingScreenState extends State<SettingScreen> {
                           topRight: Radius.circular(20)),
                     ),
                     context: context,
-                    builder: (context) => SelectLanguageFragment())),
+                    builder: (context) => SelectLanguageFragment(provider))),
             buildSettingItem(
-                "Auto play text to speech",
+                AppLocalizations.of(context).auto_speech,
                 Switch(
                   activeColor: Colors.purple,
                   value: provider.autoSpeech,
@@ -116,10 +122,12 @@ class _SettingScreenState extends State<SettingScreen> {
                   },
                 ),
                 null),
-            buildSettingItem("Clear message history", null, () {
+            buildSettingItem(
+                AppLocalizations.of(context).clear_message_history, null, () {
               provider.clearMessageHistory();
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text("Clear all messages successfully"),
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content:
+                    Text(AppLocalizations.of(context).clear_message_success),
               ));
             })
           ],

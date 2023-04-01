@@ -16,7 +16,9 @@ class ChatMessageRepository {
   }
 
   void init() async {
-    Hive.registerAdapter(ChatMessageAdapter());
+    if (!Hive.isAdapterRegistered(ChatMessageAdapter.ID)) {
+      Hive.registerAdapter(ChatMessageAdapter());
+    }
     chatMessagebox = await Hive.openBox<ChatMessage>(name);
   }
 

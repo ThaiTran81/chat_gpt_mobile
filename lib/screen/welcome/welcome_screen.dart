@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../components/gradient_text.dart';
 import '../../utils/constants.dart';
 import '../../repository/share_data_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainScreen extends StatelessWidget {
   @override
@@ -21,7 +22,7 @@ class MainScreen extends StatelessWidget {
               Image.asset("assets/images/welcome.gif"),
               Spacer(flex: 3),
               Text(
-                "Welcome to your own",
+                AppLocalizations.of(context).onboarding_title_header,
                 textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
@@ -29,25 +30,25 @@ class MainScreen extends StatelessWidget {
                     .copyWith(fontWeight: FontWeight.bold),
               ),
             GradientText(
-              'AI assistant',
-              textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineMedium!
-                  .copyWith(fontWeight: FontWeight.bold),
-              gradient: LinearGradient(colors: [
-                Colors.purpleAccent,
-                Colors.purpleAccent,
-                Colors.purpleAccent,
-                // Color.fromRGBO(222, 178, 197, 1),
-                Colors.white,
+              AppLocalizations.of(context).onboarding_title_main_header,
+                textAlign: TextAlign.center,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineMedium!
+                    .copyWith(fontWeight: FontWeight.bold),
+                gradient: LinearGradient(colors: [
+                  Colors.purpleAccent,
+                  Colors.purpleAccent,
+                  Colors.purpleAccent,
+                  // Color.fromRGBO(222, 178, 197, 1),
+                  Colors.white,
                 Colors.white,
 
               ]),
             ),
               Spacer(),
               Text(
-                "Freedom ask any question with\n your assistant.",
+                AppLocalizations.of(context).onboarding_sub_header,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Theme.of(context)
@@ -70,14 +71,15 @@ class MainScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          "Get started",
-                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .color!
-                                    .withOpacity(0.8),
-                              ),
+                          AppLocalizations.of(context).obboarding_btn_start,
+                          style:
+                              Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .color!
+                                        .withOpacity(0.8),
+                                  ),
                         ),
                         SizedBox(width: kDefaultPadding / 4),
                         Icon(

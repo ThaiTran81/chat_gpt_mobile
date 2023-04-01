@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:chat_tdt/generated/l10n.dart';
 import 'package:chat_tdt/repository/chat_message_repository.dart';
 import 'package:chat_tdt/repository/openai_repository.dart';
 import 'package:chat_tdt/repository/share_data_repository.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../models/ChatMessage.dart';
 
@@ -12,13 +15,21 @@ class MessageScreenProvider extends ChangeNotifier {
   List<ChatMessage> messageHistory = List.empty(growable: true);
   String? currentMessageSpeech;
   ChatMessage? lastChatMessage;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
+  late BuildContext _context;
+  var audioPlayer = AssetsAudioPlayer.newPlayer();
+  bool isProcessing = false;
 
   ScrollController get scrollController => _scrollController;
 
-  MessageScreenProvider() {
+  MessageScreenProvider(this._context) {
     chatMessageRepository.getChatMessageHistory().then((value) {
       messageHistory = value;
+      messageHistory.sort(
+        (a, b) {
+          return a.createdTime.compareTo(b.createdTime);
+        },
+      );
       notifyListeners();
     });
   }
@@ -43,13 +54,29 @@ class MessageScreenProvider extends ChangeNotifier {
     var message = ChatMessage(
         chatRole: ChatRole.USER.code, isSender: true, text: content);
     addMessage(message);
+    audioPlayer.open(Audio("assets/sounds/typing.mp3"),
+        autoStart: true,
+        showNotification: true,
+        loopMode: LoopMode.single,
+        volume: 1);
+
+    setIsProcessing(true);
     OpenAIRepository.sendMessage(messageHistory).then((value) {
       ChatMessage chatMessage = addAssistantMessage(value);
       if (ShareDataConfigRepository.autoSpeech) {
         setCurrentMessage(chatMessage.id);
       }
+      audioPlayer.stop();
+      setIsProcessing(false);
     }, onError: (e) {
       print(e);
+      ChatMessage chatMessage = addAssistantMessage(
+          AppLocalizations.of(_context).message_err_unexpected);
+      if (ShareDataConfigRepository.autoSpeech) {
+        setCurrentMessage(chatMessage.id);
+      }
+      audioPlayer.stop();
+      setIsProcessing(false);
     });
   }
 
@@ -85,6 +112,16 @@ class MessageScreenProvider extends ChangeNotifier {
 
   void refreshMessageHisory() async {
     messageHistory = await chatMessageRepository.getChatMessageHistory();
+    messageHistory.sort(
+      (a, b) {
+        return a.createdTime.compareTo(b.createdTime);
+      },
+    );
+    notifyListeners();
+  }
+
+  void setIsProcessing(bool value) {
+    isProcessing = value;
     notifyListeners();
   }
 }

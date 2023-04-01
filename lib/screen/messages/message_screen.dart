@@ -11,7 +11,7 @@ class MessagesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (BuildContext context) {
-        return MessageScreenProvider();
+        return MessageScreenProvider(context);
       },
       child: Consumer<MessageScreenProvider>(
         builder: (context, provider, child) {
@@ -61,7 +61,7 @@ class MessagesScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SettingScreen(),
+                            builder: (context) => SettingScreen(context),
                           ),
                         ).then((value) {
                           provider.refreshMessageHisory();

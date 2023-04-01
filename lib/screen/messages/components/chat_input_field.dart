@@ -1,9 +1,9 @@
-import 'package:chat_tdt/models/ChatMessage.dart';
 import 'package:chat_tdt/screen/messages/message_screen_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../utils/constants.dart';
 
@@ -113,7 +113,8 @@ class _ChatInputFieldState extends State<ChatInputField> {
                       _submitInputValue(value, provider);
                     },
                     decoration: InputDecoration(
-                      hintText: "Type message",
+                      hintText: AppLocalizations.of(context)
+                          .message_screen_hint_text_input,
                       hintStyle:
                           TextStyle(color: Colors.white.withOpacity(0.5)),
                       border: InputBorder.none,

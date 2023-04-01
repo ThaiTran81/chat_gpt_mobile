@@ -7,6 +7,8 @@ part of 'ChatMessage.dart';
 // **************************************************************************
 
 class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
+  static const int ID = 0;
+
   @override
   final int typeId = 0;
 
@@ -20,13 +22,15 @@ class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
       text: fields[1] as String,
       chatRole: fields[2] as String,
       isSender: fields[3] as bool,
-    )..id = fields[0] as String;
+    )
+      ..id = fields[0] as String
+      ..createdTime = fields[4] as DateTime;
   }
 
   @override
   void write(BinaryWriter writer, ChatMessage obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -34,7 +38,9 @@ class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
       ..writeByte(2)
       ..write(obj.chatRole)
       ..writeByte(3)
-      ..write(obj.isSender);
+      ..write(obj.isSender)
+      ..writeByte(4)
+      ..write(obj.createdTime);
   }
 
   @override
@@ -43,7 +49,7 @@ class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ChatMessageAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+          other is ChatMessageAdapter &&
+              runtimeType == other.runtimeType &&
+              typeId == other.typeId;
 }
