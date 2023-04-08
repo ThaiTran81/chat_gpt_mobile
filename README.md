@@ -1,16 +1,14 @@
-# chat_tdt
+# Suri GPT
 
-A chat application integrated chat GPT
+Bài tập nhỏ: Xây dựng ứng dụng VoiceGPT
 
-## Getting Started
+- Sinh viên: Trần Hoàng Thái - 19127546
 
-This project is a starting point for a Flutter application.
+## Google play
 
-A few resources to get you started if this is your first Flutter project:
+https://play.google.com/store/apps/details?id=com.thaitran81.chat_tdt
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Demo video
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+https://youtu.be/-U0etDfIxUA
+
